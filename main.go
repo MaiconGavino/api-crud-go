@@ -6,6 +6,7 @@ import (
 	"github.com/maicongavino/api-crud-go/domain"
 	"github.com/maicongavino/api-crud-go/domain/person"
 	"net/http"
+	"strings"
 )
 
 func main() {
@@ -40,6 +41,22 @@ func main() {
 
 			w.WriteHeader(http.StatusCreated)
 			return
+		}
+		if r.Method == "GET" {
+
+			path := strings.TrimPrefix(r.URL.Path, "person")
+			if path == "" {
+				//Person List All
+				people := personServe.List()
+				err := json.NewEncoder(w).Encode(people)
+				if err != nil {
+					http.Error(w, "Error trying to list people", http.StatusInternalServerError)
+					return
+				}
+				w.WriteHeader(http.StatusOK)
+				w.Header().Set("Content-Type", "application/json")
+			}
+			//person list person id
 		}
 		http.Error(w, "Not Implemented", http.StatusInternalServerError)
 	})

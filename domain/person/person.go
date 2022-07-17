@@ -103,3 +103,7 @@ func (s Service) salveFile() error {
 	}
 	return ioutil.WriteFile(s.dbFilePath, allPeopleJSON, 0755)
 }
+
+func (s Service) List() domain.People {
+	return s.peope
+}
